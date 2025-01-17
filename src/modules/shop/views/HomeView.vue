@@ -287,7 +287,7 @@
   </section>
 </template>
 <script setup lang="ts">
-  import { tesloApi } from '@/api/tesloApi';
-  console.log('<--------------- JK HomeView --------------->');
-  console.log(tesloApi);
+import { getProductsAction } from '@/modules/products/actions';
+
+getProductsAction( 1 );
 </script>
