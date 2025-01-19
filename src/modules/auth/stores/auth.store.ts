@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
-import { AuthStatus, type User } from '../interfaces';
-import { loginActions } from '../actions';
+import { AuthStatus, type AuthError, type AuthSuccess, type RegisterPayload, type User } from '../interfaces';
+import { loginActions, registerAction } from '../actions';
 import { useLocalStorage } from '@vueuse/core';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -12,13 +12,7 @@ export const useAuthStore = defineStore('auth', () => {
   const login = async ( email: string, password: string ) => { 
     try {
       const loginResponse = await loginActions( email, password );
-      if ( !loginResponse.ok ) {
-        logout();
-        return false;
-      }
-      user.value = loginResponse.user;
-      token.value = loginResponse.token;
-      authStatus.value = AuthStatus.AUTHENTICATED;
+     authUser( loginResponse );
       return true;
     } catch {
       logout();
@@ -26,6 +20,27 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const register = async ( payload: RegisterPayload ) => {
+    try {
+      const  registerResponse = await registerAction( payload );
+      authUser( registerResponse );
+      return true;
+    } catch {
+      logout();
+      return false;
+    }
+  };
+
+  const authUser = ( authResp: AuthSuccess | AuthError ) => {
+    if ( !authResp.ok ) {
+      logout();
+      return false;
+    }
+    user.value = authResp.user;
+    token.value = authResp.token;
+    authStatus.value = AuthStatus.AUTHENTICATED;
+  }
+  
   const logout = () => {
     authStatus.value = AuthStatus.NOT_AUTHENTICATED;
     user.value = undefined;
@@ -47,5 +62,6 @@ export const useAuthStore = defineStore('auth', () => {
     // actions
     login,
     logout,
+    register,
   };
 })

@@ -1,19 +1,8 @@
 import { tesloApi } from '@/api/teslo.api';
-import type { AuthResponse, User } from '../interfaces';
+import type { AuthError, AuthResponse, AuthSuccess } from '../interfaces';
 import { isAxiosError } from 'axios';
 
-interface LoginError {
-  ok: false;
-  error: string;
-}
-
-interface LoginSuccess {
-  ok: true;
-  user: User;
-  token: string;
-}
-
-export const loginActions = async ( email: string, password: string ): Promise<LoginError | LoginSuccess> => {
+export const loginActions = async ( email: string, password: string ): Promise<AuthError | AuthSuccess> => {
   try {
     const resp = await tesloApi.post<AuthResponse>('/auth/login', {
       email,

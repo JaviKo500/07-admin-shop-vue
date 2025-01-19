@@ -54,9 +54,9 @@
 
 <script lang="ts" setup>
   import { reactive, ref, watchEffect } from 'vue';
+  import { useToast } from 'vue-toastification';
 
   import { useAuthStore } from '../stores/auth.store';
-import { useToast } from 'vue-toastification';
 
   const myForm = reactive({
     email: '',
