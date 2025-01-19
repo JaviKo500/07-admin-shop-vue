@@ -39,11 +39,13 @@
     <p>awaiting please...</p>
   </div>
   <ProductList v-else :products="products ?? []" />
+  <BottomPagination class="text-white" />
 </template>
 <script setup lang="ts">
-  import { getProductsAction } from '@/modules/products/actions';
   import { useQuery } from '@tanstack/vue-query';
+  import { getProductsAction } from '@/modules/products/actions';
   import ProductList from '@/modules/products/components/ProductList.vue';
+  import BottomPagination from '@/modules/common/components/BottomPagination.vue';
 
   const { data: products = [], isLoading,  } = useQuery({
     queryKey: ['products', { page: 1 }],
