@@ -6,6 +6,7 @@
       <label for="email" class="block text-gray-600">Email</label>
       <input
         v-model="myForm.email"
+        ref="emailInputRef"
         type="email"
         id="email"
         name="email"
@@ -18,6 +19,7 @@
       <label for="password" class="block text-gray-600">Password</label>
       <input
         v-model="myForm.password"
+        ref="passwordInputRef"
         type="password"
         id="password"
         name="password"
@@ -51,10 +53,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { reactive } from 'vue';
-  import { useRouter } from 'vue-router';
+  import { reactive, ref, watchEffect } from 'vue';
 
   import { useAuthStore } from '../stores/auth.store';
+import { useToast } from 'vue-toastification';
 
   const myForm = reactive({
     email: '',
@@ -62,12 +64,37 @@
     rememberMe: false,
   });
 
-  const router = useRouter();
+  const emailInputRef = ref<HTMLInputElement | null>(null);
+  const passwordInputRef = ref<HTMLInputElement | null>(null);
+
+  const toast = useToast();
   const authStore = useAuthStore();
   const onLogin = async () => {
-    const ok = await authStore.login(myForm.email, myForm.password);
-    if( ok ) {
-      router.replace('/');
+    if( myForm.email.trim() === '' ) return emailInputRef.value?.focus();
+    if( myForm.password === '' || myForm.password.length < 6 ) return passwordInputRef.value?.focus();
+
+    if ( myForm.rememberMe ) {
+      localStorage.setItem('email', myForm.email);
+    } else {
+      localStorage.removeItem('email');
     }
+
+    const ok = await authStore.login( myForm.email, myForm.password );
+    
+    if( ok ) {
+      return;
+    }
+
+    toast.error('Invalid email or password');
   };
+
+  // Restore last email and check if it is valid 
+  watchEffect(() => {
+    const email = localStorage.getItem('email');
+    if ( email ) {
+      myForm.email = email;
+      myForm.rememberMe = true;
+      passwordInputRef.value?.focus();
+    }
+  });
 </script>

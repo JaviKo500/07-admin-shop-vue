@@ -2,10 +2,11 @@ import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
 import { AuthStatus, type User } from '../interfaces';
 import { loginActions } from '../actions';
+import { useLocalStorage } from '@vueuse/core';
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | undefined>();
-  const token = ref('');
+  const token = ref( useLocalStorage('token', '') );
   const authStatus = ref<AuthStatus>(AuthStatus.CHECKING);
 
   const login = async ( email: string, password: string ) => { 
