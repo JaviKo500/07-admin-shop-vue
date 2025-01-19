@@ -76,6 +76,7 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated: computed(() => authStatus.value === AuthStatus.AUTHENTICATED),
     isNotAuthenticated: computed(() => authStatus.value === AuthStatus.NOT_AUTHENTICATED),
     username: computed(() => user.value?.fullName ?? ''),
+    isAdmin: computed(() => user.value?.roles.includes('admin') ?? false),
 
     // actions
     login,

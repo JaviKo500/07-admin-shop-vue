@@ -5,10 +5,12 @@ import { isAxiosError } from 'axios';
 export const checkAuthAction = async (): Promise<AuthError | AuthSuccess> => {
   try {
     const token = localStorage.getItem('token');
-    if ( token && token?.length < 10) return {
-      ok: false,
-      error: 'Not exist token',
-    };
+    if ( !token || token?.length < 10) {
+      return {
+        ok: false,
+        error: 'Not exist token',
+      };
+    }
 
     const resp = await tesloApi.get<AuthResponse>('/auth/check-status');
     
