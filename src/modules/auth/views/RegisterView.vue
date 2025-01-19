@@ -1,10 +1,12 @@
 <template>
   <h1 class="text-2xl font-semibold mb-4">Register</h1>
-  <form action="#" method="POST">
+  <form @submit.prevent="onRegister" method="POST">
     <!-- Name Input -->
     <div class="mb-4">
       <label for="name" class="block text-gray-600">Name</label>
       <input
+        v-model="myRegisterForm.fullName"
+        ref="nameInputRef"
         type="text"
         id="name"
         name="name"
@@ -13,10 +15,12 @@
       />
     </div>
     
-    <!-- Username Input -->
+    <!-- Email Input -->
     <div class="mb-4">
       <label for="email" class="block text-gray-600">Email</label>
       <input
+        v-model="myRegisterForm.email"
+        ref="emailInputRef"
         type="text"
         id="email"
         name="email"
@@ -28,6 +32,8 @@
     <div class="mb-4">
       <label for="password" class="block text-gray-600">Password</label>
       <input
+        v-model="myRegisterForm.password"
+        ref="passwordInputRef"
         type="password"
         id="password"
         name="password"
@@ -37,7 +43,9 @@
     </div>
     <!-- Remember Me Checkbox -->
     <div class="mb-4 flex items-center">
-      <input type="checkbox" id="remember" name="remember" class="text-blue-500" />
+      <input 
+        v-model="myRegisterForm.rememberMe"
+        type="checkbox" id="remember" name="remember" class="text-blue-500" />
       <label for="remember" class="text-gray-600 ml-2">Remember Me</label>
     </div>
     <!-- Forgot Password Link -->
@@ -58,5 +66,38 @@
   </div>
 </template>
 <script lang="ts" setup>
-  
+  import { reactive, ref } from 'vue';
+  import { useToast } from 'vue-toastification';
+
+  import { useAuthStore } from '../stores/auth.store';
+
+  const myRegisterForm = reactive({
+    email: '',
+    password: '',
+    fullName: '',
+    rememberMe: false,
+  });
+
+  const emailInputRef = ref<HTMLInputElement | null>(null);
+  const passwordInputRef = ref<HTMLInputElement | null>(null);
+  const nameInputRef = ref<HTMLInputElement | null>(null);
+
+  const toast = useToast();
+  const authStore = useAuthStore();
+
+  const onRegister = async () => {
+    if( myRegisterForm.fullName.trim() === '' ) return nameInputRef.value?.focus();
+    if( myRegisterForm.email.trim() === '' ) return emailInputRef.value?.focus();
+    if( myRegisterForm.password === '' || myRegisterForm.password.length < 6 ) return passwordInputRef.value?.focus();
+
+    const { rememberMe, ...registerPayload } = myRegisterForm;
+    
+    const { ok, error } = await authStore.register( registerPayload );
+    
+    if ( ok ) {
+      authStore.rememberMe( rememberMe, registerPayload.email );
+      return;
+    };
+    toast.error( error ?? 'Not can\'t complete registration');
+  }
 </script>

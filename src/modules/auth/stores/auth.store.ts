@@ -12,8 +12,8 @@ export const useAuthStore = defineStore('auth', () => {
   const login = async ( email: string, password: string ) => { 
     try {
       const loginResponse = await loginActions( email, password );
-     authUser( loginResponse );
-      return true;
+      const ok = authUser( loginResponse );
+      return ok;
     } catch {
       logout();
       return false;
@@ -23,11 +23,11 @@ export const useAuthStore = defineStore('auth', () => {
   const register = async ( payload: RegisterPayload ) => {
     try {
       const  registerResponse = await registerAction( payload );
-      authUser( registerResponse );
-      return true;
+      const ok = authUser( registerResponse );
+      return ok ? { ok, } : { ok, error: (registerResponse as AuthError).error  };
     } catch {
       logout();
-      return false;
+      return { ok: false, error: 'Not cant complete registration' };
     }
   };
 
@@ -39,6 +39,7 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = authResp.user;
     token.value = authResp.token;
     authStatus.value = AuthStatus.AUTHENTICATED;
+    return true;
   }
   
   const logout = () => {
@@ -47,6 +48,13 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = '';
   }
 
+  const rememberMe = ( remember: boolean, email: string ) => {
+    if ( remember ) {
+      localStorage.setItem('email', email);
+    } else {
+      localStorage.removeItem('email');
+    }
+  }
   return { 
     // Properties
     user,
@@ -63,5 +71,6 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     logout,
     register,
+    rememberMe,
   };
 })

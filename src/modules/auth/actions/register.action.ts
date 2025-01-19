@@ -12,8 +12,8 @@ export const registerAction = async ( payload: RegisterPayload ): Promise<AuthEr
   } catch (error) {
     console.log('<--------------- JK Register.action Error --------------->');
     console.log(error);
-    if ( isAxiosError(error) && error.response?.status === 401 ) {
-      return { ok: false, error: 'Invalid email or password' };
+    if ( isAxiosError(error) && error.response?.status === 400 ) {
+      return { ok: false, error: 'Not cant complete registration' };
     }
     throw new Error('Error registering');
   }
