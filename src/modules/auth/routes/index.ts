@@ -9,12 +9,12 @@ export const authRoutes: RouteRecordRaw = {
     {
       path: 'login',
       name: 'login',
-      component: () => import('@/modules/auth/views/LoginPage.vue'),
+      component: () => import('@/modules/auth/views/LoginView.vue'),
     },
     {
       path: 'register',
       name: 'register',
-      component: () => import('@/modules/auth/views/RegisterPage.vue'),
+      component: () => import('@/modules/auth/views/RegisterView.vue'),
     }
   ]
 }
