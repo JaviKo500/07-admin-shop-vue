@@ -73,15 +73,10 @@
     if( myForm.email.trim() === '' ) return emailInputRef.value?.focus();
     if( myForm.password === '' || myForm.password.length < 6 ) return passwordInputRef.value?.focus();
 
-    if ( myForm.rememberMe ) {
-      localStorage.setItem('email', myForm.email);
-    } else {
-      localStorage.removeItem('email');
-    }
-
     const ok = await authStore.login( myForm.email, myForm.password );
     
     if( ok ) {
+      authStore.rememberMe( myForm.rememberMe, myForm.email );
       return;
     }
 
