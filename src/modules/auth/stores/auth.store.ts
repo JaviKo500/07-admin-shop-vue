@@ -56,6 +56,7 @@ export const useAuthStore = defineStore('auth', () => {
     authStatus.value = AuthStatus.NOT_AUTHENTICATED;
     user.value = undefined;
     token.value = '';
+    localStorage.removeItem('token');
   }
 
   const rememberMe = ( remember: boolean, email: string ) => {
