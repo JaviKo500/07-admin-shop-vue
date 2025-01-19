@@ -11,8 +11,6 @@ export const checkAuthAction = async (): Promise<AuthError | AuthSuccess> => {
     };
 
     const resp = await tesloApi.get<AuthResponse>('/auth/check-status');
-    console.log('<--------------- JK Check-auth.action --------------->');
-    console.log(resp.data);
     
     return {
       ok: true,
