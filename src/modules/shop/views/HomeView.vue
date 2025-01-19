@@ -39,17 +39,33 @@
     <p>awaiting please...</p>
   </div>
   <ProductList v-else :products="products ?? []" />
-  <BottomPagination class="text-white" />
+  <BottomPagination 
+    :has-more-data="!!products && products.length < 10" 
+    :page="page" />
 </template>
 <script setup lang="ts">
+  import { useRoute } from 'vue-router';
+  import { ref, watch } from 'vue';
   import { useQuery } from '@tanstack/vue-query';
+
   import { getProductsAction } from '@/modules/products/actions';
   import ProductList from '@/modules/products/components/ProductList.vue';
   import BottomPagination from '@/modules/common/components/BottomPagination.vue';
 
+  const route = useRoute();
+
+  const page = ref(Number(route.query?.page ?? 1));
+
   const { data: products = [], isLoading,  } = useQuery({
-    queryKey: ['products', { page: 1 }],
-    queryFn: () => getProductsAction(),
+    queryKey: ['products', { page: page }],
+    queryFn: () => getProductsAction(page.value),
     // staleTime: 1000 * 60, // 1 minute
   });
+
+  watch(
+    () => route.query?.page,
+    ( newPage ) => {
+      page.value = Number(newPage || 1);
+    }
+  );
 </script>
