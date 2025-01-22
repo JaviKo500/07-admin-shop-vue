@@ -44,17 +44,15 @@
     :page="page" />
 </template>
 <script setup lang="ts">
-  import { useRoute } from 'vue-router';
-  import { ref, watch, watchEffect } from 'vue';
+  import { watchEffect } from 'vue';
   import { useQuery, useQueryClient } from '@tanstack/vue-query';
 
   import { getProductsAction } from '@/modules/products/actions';
   import ProductList from '@/modules/products/components/ProductList.vue';
   import BottomPagination from '@/modules/common/components/BottomPagination.vue';
+  import { usePagination } from '@/modules/common/composables/usePagination';
 
-  const route = useRoute();
-
-  const page = ref(Number(route.query?.page ?? 1));
+  const { page } =  usePagination();
 
   const queryClient = useQueryClient();
   const { data: products = [], isLoading,  } = useQuery({
@@ -62,14 +60,6 @@
     queryFn: () => getProductsAction(page.value),
     // staleTime: 1000 * 60, // 1 minute
   });
-
-  watch(
-    () => route.query?.page,
-    ( newPage ) => {
-      page.value = Number(newPage || 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  );
 
   watchEffect(() => {
     queryClient.prefetchQuery({
