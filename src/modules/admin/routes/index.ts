@@ -13,9 +13,14 @@ export const adminRoutes: RouteRecordRaw = {
   redirect: { name: 'admin-dashboard' },
   children: [
     {
-      path: '/dashboard',
+      path: 'dashboard',
       name: 'admin-dashboard',
       component: () => import('@/modules/admin/views/DashboardView.vue'),
+    },
+    {
+      path: 'products',
+      name: 'admin-products',
+      component: () => import('@/modules/admin/views/ProductsView.vue'),
     }
   ],
 };
