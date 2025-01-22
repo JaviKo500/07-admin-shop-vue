@@ -56,12 +56,16 @@
             </div>
         </button>
         <div class="flex flex-col flex-grow p-4 overflow-auto">
-            <a class="flex items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300" href="#">
-                <span class="leading-none">Item 1</span>
-            </a>
-            <a class="flex items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300" href="#">
-                <span class="leading-none">Item 2</span>
-            </a>
+            <RouterLink 
+                to="/admin"
+                class="flex items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300" href="#">
+                <span class="leading-none">Dashboard</span>
+            </RouterLink>
+            <RouterLink 
+            to="/admin/products"
+                class="flex items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300" href="#">
+                <span class="leading-none">Products</span>
+            </RouterLink>
             <a class="flex items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300" href="#">
                 <span class="leading-none">Item 3</span>
             </a>
