@@ -28,7 +28,7 @@
               <img :src="product.images[0]" :alt="product.title" srcset="" class="h-10 w-10 object-cover rounded-full">
             </td>
             <td class="text-left py-3 px-4">
-              <RouterLink :to="`/products/${product.id}`" class="hover:text-blue-500 hover:underline">
+              <RouterLink :to="`/admin/products/${product.id}`" class="hover:text-blue-500 hover:underline">
                 {{ product.title }}
               </RouterLink>
             </td>
