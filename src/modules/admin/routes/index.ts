@@ -10,5 +10,12 @@ export const adminRoutes: RouteRecordRaw = {
     isAdminGuard
   ],
   component: () => import('@/modules/admin/layouts/AdminLayout.vue'),
-  children: [],
+  redirect: { name: 'admin-dashboard' },
+  children: [
+    {
+      path: '/dashboard',
+      name: 'admin-dashboard',
+      component: () => import('@/modules/admin/views/DashboardView.vue'),
+    }
+  ],
 };
