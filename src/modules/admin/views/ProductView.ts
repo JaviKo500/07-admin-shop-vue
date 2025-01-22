@@ -1,7 +1,10 @@
-import { getProductByIdAction } from '@/modules/products/actions';
-import { useQuery } from '@tanstack/vue-query';
 import { defineComponent, watchEffect } from 'vue';
+
 import { useRouter } from 'vue-router';
+import { useQuery } from '@tanstack/vue-query';
+import { useForm } from 'vee-validate';
+
+import { getProductByIdAction } from '@/modules/products/actions';
 
 export default defineComponent({
   props: {
@@ -18,6 +21,10 @@ export default defineComponent({
       retry: false,
     });
 
+    const { values } = useForm();
+    console.log('<--------------- JK ProductView --------------->');
+    console.log(values);
+
     watchEffect(() => {
       if ( isError.value && !isLoading.value ) {
         router.replace({ name: 'admin-products' });
@@ -28,6 +35,7 @@ export default defineComponent({
     return {
       // properties
       product,
+      values,
       // getters
       allSizes: ['XS', 'S', 'M'],
       // actions

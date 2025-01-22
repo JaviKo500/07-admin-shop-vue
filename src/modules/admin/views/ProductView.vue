@@ -90,6 +90,13 @@
       </div>
     </div>
   </form>
+  <div class="grid grid-cols-2 mt-2">
+    <div class="bg-blue-200  p-2" >
+      <pre>
+        {{values}}
+      </pre>
+    </div>
+  </div>
 </template>
 
 <script src="./ProductView.ts" lang="ts" ></script>
