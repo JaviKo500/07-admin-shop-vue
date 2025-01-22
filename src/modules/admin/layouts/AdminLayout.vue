@@ -78,13 +78,12 @@
             <a class="flex items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300" href="#">
                 <span class="leading-none">Item 6</span>
             </a>
-            <a class="flex items-center flex-shrink-0 h-10 px-3 mt-auto text-sm font-medium bg-gray-200 rounded hover:bg-gray-300"
-                href="#">
+            <RouterLink to="/admin/products/+" class="flex items-center flex-shrink-0 h-10 px-3 mt-auto text-sm font-medium bg-gray-200 rounded hover:bg-blue-700 hover:text-white hover:transition-all">
                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
-                <span class="ml-2 leading-none">New Item</span>
-            </a>
+                <span class="ml-2 leading-none">New Product</span>
+            </RouterLink>
         </div>
 
     </div>
