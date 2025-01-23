@@ -2,7 +2,7 @@ import { defineComponent, watchEffect } from 'vue';
 
 import { useRouter } from 'vue-router';
 import { useQuery } from '@tanstack/vue-query';
-import { useForm } from 'vee-validate';
+import { useFieldArray, useForm } from 'vee-validate';
 import * as yup from 'yup';
 
 import { getProductByIdAction } from '@/modules/products/actions';
@@ -41,6 +41,7 @@ export default defineComponent({
 
     const { values, defineField, errors, handleSubmit } = useForm({
       validationSchema,
+      initialValues: product.value,
     });
 
     const [ title, titleAttrs ] = defineField('title');
@@ -50,6 +51,10 @@ export default defineComponent({
     const [ stock, stockAttrs ] = defineField('stock');
     const [ gender, genderAttrs ] = defineField('gender');
 
+    const { fields: images } = useFieldArray<string>('images');
+
+    console.log('<--------------- JK ProductView --------------->');
+    console.log(images);
     const onSubmit = handleSubmit(( values ) => {
       console.log('<--------------- JK ProductView --------------->');
       console.log(values);
@@ -78,7 +83,7 @@ export default defineComponent({
       stockAttrs,
       gender, 
       genderAttrs,
-
+      images,
       // getters
       allSizes: ['XS', 'S', 'M'],
       
