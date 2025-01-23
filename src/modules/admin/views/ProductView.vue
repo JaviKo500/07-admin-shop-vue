@@ -89,12 +89,11 @@
 
       <div class="mb-4">
         <label for="stock" class="form-label">Género</label>
-        <select class="form-control">
-          <option value="">Seleccione</option>
-          <option value="kid">Niño</option>
-          <option value="women">Mujer</option>
-          <option value="men">Hombre</option>
-        </select>
+        <CustomDropdown
+          v-model="gender" 
+          v-bind="genderAttrs"
+          :error="errors.gender"
+          />
       </div>
 
       <!-- Botón para guardar -->

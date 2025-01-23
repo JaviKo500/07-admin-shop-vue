@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import { getProductByIdAction } from '@/modules/products/actions';
 import CustomInput from '@/modules/common/components/CustomInput.vue';
 import CustomTextArea from '@/modules/common/components/CustomTextArea.vue';
+import CustomDropdown from '@/modules/common/components/CustomDropdown.vue';
 
 const validationSchema = yup.object({
   title: yup.string().required().min(2),
@@ -22,6 +23,7 @@ export default defineComponent({
   components: {
     CustomInput,
     CustomTextArea,
+    CustomDropdown,
   },
   props: {
     productId: {
