@@ -6,6 +6,7 @@ import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 
 import { getProductByIdAction } from '@/modules/products/actions';
+import CustomInput from '@/modules/common/components/CustomInput.vue';
 
 const validationSchema = yup.object({
   title: yup.string().required().min(2),
@@ -17,6 +18,9 @@ const validationSchema = yup.object({
 });
 
 export default defineComponent({
+  components: {
+    CustomInput,
+  },
   props: {
     productId: {
       type: String,
