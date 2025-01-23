@@ -9,7 +9,8 @@
       <!-- Primera parte del formulario -->
       <div class="mb-4">
         <label for="title" class="form-label">Título</label>
-        <input type="text" id="title" class="form-control" />
+        <input
+          v-model="title" v-bind="titleAttrs" type="text" id="title" class="form-control" />
       </div>
 
       <div class="mb-4">
@@ -94,6 +95,11 @@
     <div class="bg-blue-200  p-2" >
       <pre>
         {{values}}
+      </pre>
+    </div>
+    <div class="bg-red-200  p-2" >
+      <pre>
+        {{errors}}
       </pre>
     </div>
   </div>
