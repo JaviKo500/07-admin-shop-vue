@@ -4,7 +4,7 @@
     <hr class="my-4" />
   </div>
 
-  <form class="grid grid-cols-1 sm:grid-cols-2 bg-white px-5 gap-5">
+  <form @submit="onSubmit"  class="grid grid-cols-1 sm:grid-cols-2 bg-white px-5 gap-5">
     <div class="first-col">
       <!-- Primera parte del formulario -->
       <div class="mb-4">
@@ -27,10 +27,10 @@
 
       <div class="mb-4">
         <label for="description" class="form-label">Descripción</label>
-        <textarea
-          id="description"
-          class="shadow h-32 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        ></textarea>
+        <CustomTextArea
+          v-model="description"
+          v-bind="descriptionAttrs"
+          :error="errors.description"/>
       </div>
 
       <div class="flex flex-row gap-3">

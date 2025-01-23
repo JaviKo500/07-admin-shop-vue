@@ -7,6 +7,7 @@ import * as yup from 'yup';
 
 import { getProductByIdAction } from '@/modules/products/actions';
 import CustomInput from '@/modules/common/components/CustomInput.vue';
+import CustomTextArea from '@/modules/common/components/CustomTextArea.vue';
 
 const validationSchema = yup.object({
   title: yup.string().required().min(2),
@@ -20,6 +21,7 @@ const validationSchema = yup.object({
 export default defineComponent({
   components: {
     CustomInput,
+    CustomTextArea,
   },
   props: {
     productId: {
@@ -35,7 +37,7 @@ export default defineComponent({
       retry: false,
     });
 
-    const { values, defineField, errors } = useForm({
+    const { values, defineField, errors, handleSubmit } = useForm({
       validationSchema,
     });
 
@@ -46,6 +48,10 @@ export default defineComponent({
     const [ stock, stockAttrs ] = defineField('stock');
     const [ gender, genderAttrs ] = defineField('gender');
 
+    const onSubmit = handleSubmit(( values ) => {
+      console.log('<--------------- JK ProductView --------------->');
+      console.log(values);
+    })
     watchEffect(() => {
       if ( isError.value && !isLoading.value ) {
         router.replace({ name: 'admin-products' });
@@ -75,6 +81,7 @@ export default defineComponent({
       allSizes: ['XS', 'S', 'M'],
       
       // actions
+      onSubmit,
     };
   }
 });
