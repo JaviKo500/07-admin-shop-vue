@@ -10,7 +10,16 @@
       <div class="mb-4">
         <label for="title" class="form-label">Título</label>
         <input
-          v-model="title" v-bind="titleAttrs" type="text" id="title" class="form-control" />
+          v-model="title" 
+          v-bind="titleAttrs" 
+          type="text" id="title" 
+          :class="[
+            'form-control',
+            {
+              'border-red-500': errors.title,
+            }
+          ]" />
+          <span class="capitalize text-red-500" v-if="errors.title">{{ errors.title }}</span>
       </div>
 
       <div class="mb-4">
