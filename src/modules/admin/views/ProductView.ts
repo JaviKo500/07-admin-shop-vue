@@ -52,6 +52,7 @@ export default defineComponent({
     const [ gender, genderAttrs ] = defineField('gender');
 
     const { fields: images } = useFieldArray<string>('images');
+    const { fields: sizes, remove: removeSize, push: addSize } = useFieldArray<string>('sizes');
 
     console.log('<--------------- JK ProductView --------------->');
     console.log(images);
@@ -59,6 +60,16 @@ export default defineComponent({
       console.log('<--------------- JK ProductView --------------->');
       console.log(values);
     })
+
+    const toggleSize = (size: string) => {
+      const currentSizes = sizes.value.map( s => s.value );
+      const hasSize =  currentSizes.includes(size);
+      if ( hasSize ) {
+        removeSize(currentSizes.indexOf(size));
+      } else {
+        addSize(size);
+      }
+    }
     watchEffect(() => {
       if ( isError.value && !isLoading.value ) {
         router.replace({ name: 'admin-products' });
@@ -84,11 +95,14 @@ export default defineComponent({
       gender, 
       genderAttrs,
       images,
+      sizes,
+
       // getters
       allSizes: ['XS', 'S', 'M'],
       
       // actions
       onSubmit,
+      toggleSize,
     };
   }
 });

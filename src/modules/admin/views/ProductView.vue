@@ -59,6 +59,7 @@
         <label for="sizes" class="form-label">Tallas</label>
         <div class="flex flex-wrap gap-2">
           <button type="button" 
+            @click="toggleSize(size)"
             v-for="size of allSizes" :key="size" 
             class="bg-blue-100 p-2 rounded w-14 mr-2 flex-1" 
             >{{ size }}</button>
