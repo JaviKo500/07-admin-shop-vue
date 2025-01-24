@@ -1,4 +1,4 @@
-import { defineComponent, watchEffect } from 'vue';
+import { defineComponent, watch, watchEffect } from 'vue';
 
 import { useRouter } from 'vue-router';
 import { useQuery } from '@tanstack/vue-query';
@@ -39,7 +39,7 @@ export default defineComponent({
       retry: false,
     });
 
-    const { values, defineField, errors, handleSubmit } = useForm({
+    const { values, defineField, errors, handleSubmit, resetForm } = useForm({
       validationSchema,
       initialValues: product.value,
     });
@@ -76,6 +76,22 @@ export default defineComponent({
         return;
       }
     });
+
+    watch(
+      product,
+      () => {
+        if ( !product ) return;
+
+        resetForm({
+          values: product.value,
+        });
+
+      },
+      {
+        deep: true,
+        immediate: true,
+      }
+    );
 
     return {
       // properties
