@@ -11,7 +11,7 @@ import CustomTextArea from '@/modules/common/components/CustomTextArea.vue';
 import CustomDropdown from '@/modules/common/components/CustomDropdown.vue';
 
 const validationSchema = yup.object({
-  title: yup.string().required().min(2),
+  title: yup.string().required('Este campo es super importante').min(2),
   slug: yup.string().required(),
   description: yup.string().required(),
   price: yup.number().required(),
