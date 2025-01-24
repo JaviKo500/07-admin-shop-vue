@@ -114,11 +114,15 @@ export default defineComponent({
       sizes,
 
       // getters
-      allSizes: ['XS', 'S', 'M'],
+      allSizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
       
       // actions
       onSubmit,
       toggleSize,
+      hasSize : ( size: string ) => {
+        const currentSizes = sizes.value.map( size => size.value );
+        return currentSizes.includes(size);
+      }
     };
   }
 });
