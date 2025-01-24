@@ -16,7 +16,7 @@ const validationSchema = yup.object({
   description: yup.string().required(),
   price: yup.number().required(),
   stock: yup.number().required().min(1),
-  gender: yup.string().required().oneOf(['kid', 'women', 'men']),
+  gender: yup.string().required().oneOf(['kid', 'women', 'men', 'unisex']),
 });
 
 export default defineComponent({
