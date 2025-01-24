@@ -39,9 +39,9 @@ export default defineComponent({
       retry: false,
     });
 
-    const { values, defineField, errors, handleSubmit, resetForm } = useForm({
+    const { values, defineField, errors, handleSubmit, resetForm, meta } = useForm({
       validationSchema,
-      initialValues: product.value,
+      // initialValues: product.value,
     });
 
     const [ title, titleAttrs ] = defineField('title');
@@ -54,8 +54,6 @@ export default defineComponent({
     const { fields: images } = useFieldArray<string>('images');
     const { fields: sizes, remove: removeSize, push: addSize } = useFieldArray<string>('sizes');
 
-    console.log('<--------------- JK ProductView --------------->');
-    console.log(images);
     const onSubmit = handleSubmit(( values ) => {
       console.log('<--------------- JK ProductView --------------->');
       console.log(values);
@@ -112,7 +110,7 @@ export default defineComponent({
       genderAttrs,
       images,
       sizes,
-
+      meta,
       // getters
       allSizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
       

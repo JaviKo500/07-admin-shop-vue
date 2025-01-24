@@ -121,6 +121,11 @@
         {{errors}}
       </pre>
     </div>
+    <div class="bg-green-200  p-2 col-span-2" >
+      <pre>
+        {{meta}}
+      </pre>
+    </div>
   </div>
 </template>
 
