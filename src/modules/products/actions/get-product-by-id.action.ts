@@ -5,7 +5,7 @@ import { getProductImageAction } from './get-product-image.action';
 export const getProductByIdAction = async ( productId: string ): Promise<Product> => {
   try {
     if ( productId === '+' ) return {
-      id: '+',
+      id: '',
       title: '',
       slug: '',
       description: '',
