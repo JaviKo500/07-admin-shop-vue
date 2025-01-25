@@ -1,11 +1,12 @@
 import { defineComponent, watch, watchEffect } from 'vue';
 
 import { useRouter } from 'vue-router';
-import { useQuery } from '@tanstack/vue-query';
+import { useMutation, useQuery } from '@tanstack/vue-query';
 import { useFieldArray, useForm } from 'vee-validate';
 import * as yup from 'yup';
+import { useToast } from 'vue-toastification';
 
-import { getProductByIdAction } from '@/modules/products/actions';
+import { createUpdateProductAction, getProductByIdAction } from '@/modules/products/actions';
 import CustomInput from '@/modules/common/components/CustomInput.vue';
 import CustomTextArea from '@/modules/common/components/CustomTextArea.vue';
 import CustomDropdown from '@/modules/common/components/CustomDropdown.vue';
@@ -33,10 +34,21 @@ export default defineComponent({
   },
   setup( props ){
     const router = useRouter();
+    const toast = useToast();
+
     const { data: product, isError, isLoading } = useQuery({
       queryKey: [ 'product', props.productId ],
       queryFn: () => getProductByIdAction( props.productId ),
       retry: false,
+    });
+
+    const {
+      mutate,  
+      isPending, 
+      isSuccess: isUpdateProductSuccess, 
+      data: updatedProduct 
+    } = useMutation({
+      mutationFn: createUpdateProductAction
     });
 
     const { values, defineField, errors, handleSubmit, resetForm, meta } = useForm({
@@ -55,8 +67,7 @@ export default defineComponent({
     const { fields: sizes, remove: removeSize, push: addSize } = useFieldArray<string>('sizes');
 
     const onSubmit = handleSubmit(( values ) => {
-      console.log('<--------------- JK ProductView --------------->');
-      console.log(values);
+      mutate( values )
     })
 
     const toggleSize = (size: string) => {
@@ -91,6 +102,18 @@ export default defineComponent({
       }
     );
 
+    watch(
+      isUpdateProductSuccess,
+      ( value ) => {
+        if ( !value ) return;
+        toast.success('Product updated successfully');
+        // TODO redirect to product view
+        resetForm({
+          values: updatedProduct.value
+        });
+      }
+    );
+
     return {
       // properties
       product,
@@ -111,6 +134,8 @@ export default defineComponent({
       images,
       sizes,
       meta,
+      isPending,
+      
       // getters
       allSizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
       

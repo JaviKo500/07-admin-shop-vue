@@ -103,7 +103,8 @@
       <div class="my-4 text-right">
         <button
           type="submit"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed disabled:text-gray-500 disabled:bg-blue-100"
+          :disabled="isPending"
         >
           Guardar
         </button>

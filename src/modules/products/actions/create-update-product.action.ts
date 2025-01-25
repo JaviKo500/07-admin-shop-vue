@@ -22,6 +22,7 @@ const updatedProduct = async ( product: Partial<Product> ) => {
     delete product.id;
     delete product.user;
     product.images = images;
+    
     const { data } = await tesloApi.patch(`/products/${productId}`, product);
     return data;
   } catch (error) {
