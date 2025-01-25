@@ -107,7 +107,11 @@ export default defineComponent({
       isUpdateProductSuccess,
       ( value ) => {
         if ( !value ) return;
-        toast.success('Product updated successfully');
+        if ( props.productId === '+' ) {
+          toast.success('Created product successfully');
+        } else {
+          toast.success('Product updated successfully');
+        }
         router.replace(`/admin/products/${updatedProduct.value.id}`);
         resetForm({
           values: updatedProduct.value
