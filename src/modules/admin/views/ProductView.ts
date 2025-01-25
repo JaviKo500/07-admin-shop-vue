@@ -79,6 +79,7 @@ export default defineComponent({
         addSize(size);
       }
     }
+    
     watchEffect(() => {
       if ( isError.value && !isLoading.value ) {
         router.replace({ name: 'admin-products' });
@@ -135,7 +136,7 @@ export default defineComponent({
       sizes,
       meta,
       isPending,
-      
+
       // getters
       allSizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
       
