@@ -36,7 +36,7 @@ export default defineComponent({
     const router = useRouter();
     const toast = useToast();
 
-    const { data: product, isError, isLoading } = useQuery({
+    const { data: product, isError, isLoading, refetch } = useQuery({
       queryKey: [ 'product', props.productId ],
       queryFn: () => getProductByIdAction( props.productId ),
       retry: false,
@@ -46,7 +46,7 @@ export default defineComponent({
       mutate,  
       isPending, 
       isSuccess: isUpdateProductSuccess, 
-      data: updatedProduct 
+      data: updatedProduct,
     } = useMutation({
       mutationFn: createUpdateProductAction
     });
@@ -79,7 +79,7 @@ export default defineComponent({
         addSize(size);
       }
     }
-    
+
     watchEffect(() => {
       if ( isError.value && !isLoading.value ) {
         router.replace({ name: 'admin-products' });
@@ -108,10 +108,20 @@ export default defineComponent({
       ( value ) => {
         if ( !value ) return;
         toast.success('Product updated successfully');
-        // TODO redirect to product view
+        router.replace(`/admin/products/${updatedProduct.value.id}`);
         resetForm({
           values: updatedProduct.value
         });
+      }
+    );
+
+    watch(
+      () => props.productId,
+      () => {
+        refetch();
+      },
+      {
+        immediate: true,
       }
     );
 

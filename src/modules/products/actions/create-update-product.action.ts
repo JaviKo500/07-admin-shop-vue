@@ -2,7 +2,7 @@ import { tesloApi } from '@/api/teslo.api';
 import type { Product } from '../interfaces/product.interface';
 
 export const createUpdateProductAction = async ( product: Partial<Product> ) => {
-  if ( product.id && product.id !== '' ) {
+  if ( product.id && product.id !== '+' ) {
     return await updatedProduct( product );
   }
   return await createProduct( product );
