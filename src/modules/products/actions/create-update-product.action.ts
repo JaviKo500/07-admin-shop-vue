@@ -3,6 +3,8 @@ import type { Product } from '../interfaces/product.interface';
 
 export const createUpdateProductAction = async ( product: Partial<Product> ) => {
   const productId = product.id;
+  const newImages = await uploadImages( product?.images ?? [] );
+  product.images = newImages;
   const cleanProduct = cleanProductForCreateOrUpdate(product);
 
   if ( productId && productId !== '' ) {
@@ -50,11 +52,19 @@ const createProduct = async ( product: Partial<Product> ) => {
 
 const uploadImages = async ( images: (string | File)[] ) => {
   try {
-    const imageFile = images[0] as File;
-    const formData = new FormData();
-    formData.append('file', imageFile)
-    const { data } = await tesloApi.post<{ secureUrl: string }>('/files/product', formData);
-    return data.secureUrl;
+    const filesToUpload = images.filter( image => image instanceof File ) as File[];
+    const currentImages = images.filter( image => typeof image === 'string' ) as string[];
+
+    if ( !filesToUpload.length ) return currentImages;
+
+    const uploadPromises = filesToUpload.map( async ( imageFile ) => {
+      const formData = new FormData();
+      formData.append('file', imageFile)
+      const { data } = await tesloApi.post<{ secureUrl: string }>('/files/product', formData);
+      return data.secureUrl;
+    });
+    const uploadedImages = await Promise.all( uploadPromises );
+    return [ ...currentImages, ...uploadedImages ];
   } catch (error) {
     console.error('<--------------- JK Create-update-product.action Error --------------->');
     console.error(error);

@@ -6,7 +6,7 @@ export const getProductsAction = async ( page: number = 1, limit: number = 10 ) 
   try {
     const { data } = await tesloApi.get<Product[]>('/products', {
       params: {
-        offset: page * limit,
+        offset: ( page - 1 ) * limit,
         limit,
       }
     });
