@@ -48,3 +48,17 @@ const createProduct = async ( product: Partial<Product> ) => {
   }
 }
 
+const uploadImages = async ( images: (string | File)[] ) => {
+  try {
+    const imageFile = images[0] as File;
+    const formData = new FormData();
+    formData.append('file', imageFile)
+    const { data } = await tesloApi.post<{ secureUrl: string }>('/files/product', formData);
+    return data.secureUrl;
+  } catch (error) {
+    console.error('<--------------- JK Create-update-product.action Error --------------->');
+    console.error(error);
+    throw new Error('Error uploading image');
+  }
+}
+
