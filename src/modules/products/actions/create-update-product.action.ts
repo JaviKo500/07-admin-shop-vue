@@ -1,5 +1,6 @@
 import { tesloApi } from '@/api/teslo.api';
 import type { Product } from '../interfaces/product.interface';
+import { getProductImageAction } from './get-product-image.action';
 
 export const createUpdateProductAction = async ( product: Partial<Product> ) => {
   const productId = product.id;
@@ -30,7 +31,7 @@ const cleanProductForCreateOrUpdate = (product: Partial<Product>) => {
 const updatedProduct = async (productId:string, product: Partial<Product> ) => {
   try {
     const { data } = await tesloApi.patch(`/products/${productId}`, product);
-    return data;
+    return {...data, images: data.images.map( getProductImageAction )};
   } catch (error) {
     console.error('<--------------- JK Create-update-product.action Error --------------->');
     console.error(error);
@@ -42,7 +43,7 @@ const updatedProduct = async (productId:string, product: Partial<Product> ) => {
 const createProduct = async ( product: Partial<Product> ) => {
   try {
     const { data } = await tesloApi.post(`/products`, product);
-    return data;
+    return {...data, images: data.images.map( getProductImageAction )};
   } catch (error) {
     console.error('<--------------- JK Create-update-product.action Error --------------->');
     console.error(error);
