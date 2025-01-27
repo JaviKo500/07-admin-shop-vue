@@ -1,4 +1,4 @@
-import { defineComponent, watch, watchEffect } from 'vue';
+import { defineComponent, ref, watch, watchEffect } from 'vue';
 
 import { useRouter } from 'vue-router';
 import { useMutation, useQuery } from '@tanstack/vue-query';
@@ -66,6 +66,8 @@ export default defineComponent({
     const { fields: images } = useFieldArray<string>('images');
     const { fields: sizes, remove: removeSize, push: addSize } = useFieldArray<string>('sizes');
 
+    const imageFiles = ref<File[]>([]);
+
     const onSubmit = handleSubmit(( values ) => {
       mutate( values )
     })
@@ -77,6 +79,20 @@ export default defineComponent({
         removeSize(currentSizes.indexOf(size));
       } else {
         addSize(size);
+      }
+    }
+
+    const onFileChange = ( event: Event ) => {
+      const fileInput = event.target as HTMLInputElement;
+      const fileList = fileInput.files;
+
+      if ( !fileList ) return;
+      if ( !fileList.length ) return;
+
+      for (const imageFile of fileList) {
+        const { type } = imageFile;
+        if ( !type.includes('image/') ) continue;
+        imageFiles.value.push( imageFile );
       }
     }
 
@@ -150,6 +166,7 @@ export default defineComponent({
       sizes,
       meta,
       isPending,
+      imageFiles,
 
       // getters
       allSizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
@@ -160,7 +177,11 @@ export default defineComponent({
       hasSize : ( size: string ) => {
         const currentSizes = sizes.value.map( size => size.value );
         return currentSizes.includes(size);
-      }
+      },
+      onFileChange,
+      tempImageUrl: ( imageFile: File ) => {
+        return URL.createObjectURL(imageFile);
+      },
     };
   }
 });
