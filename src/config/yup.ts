@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-yup.setLocale({
+export const localeSpanishText = {
   mixed: {
     default: 'No es válido',
     required: 'Este campo es requerido',
@@ -10,7 +10,14 @@ yup.setLocale({
     notNull: 'No puede ser nulo',
     notType: 'Debe ser de tipo ${type}',
   },
+  boolean: {
+    isValue: 'Debe ser igual a ${value}',
+  },
   string: {
+    datetime: '${path} debe ser una fecha y hora ISO válida',
+    datetime_offset: '${path} debe ser una fecha y hora ISO válida con la zona horaria UTC "Z"',
+    datetime_precision:
+      '${path} debe ser una fecha y hora ISO válida con una precisión de sub-segundos de exactamente ${precision} dígitos',
     length: 'Debe tener exactamente ${length} caracteres',
     min: 'Debe tener al menos ${min} caracteres',
     max: 'Debe tener como máximo ${max} caracteres',
@@ -20,6 +27,7 @@ yup.setLocale({
     lowercase: 'Debe estar en minúsculas',
     uppercase: 'Debe estar en mayúsculas',
     matches: 'Debe coincidir con el siguiente patrón: "${regex}"',
+    uuid: '${path} debe ser un UUID válido',
   },
   number: {
     min: 'Debe ser mayor o igual a ${min}',
@@ -34,8 +42,21 @@ yup.setLocale({
     min: 'Debe ser posterior a ${min}',
     max: 'Debe ser anterior a ${max}',
   },
+  object: {
+    noUnknown: '${path} campo tiene llaves no especificadas: ${unknown}',
+    exact: '${path} debe ser exactamente ${value}',
+  },
   array: {
+    length: '${path} debe de ser ${length} elementos',
     min: 'Debe tener al menos ${min} elementos',
     max: 'Debe tener como máximo ${max} elementos',
   },
+  tuple: {
+    notType: 'tupla no puede tener un miembro ${type}, solo ${expected} miembros',
+  },
+};
+
+
+yup.setLocale({
+  ...localeSpanishText  
 });
