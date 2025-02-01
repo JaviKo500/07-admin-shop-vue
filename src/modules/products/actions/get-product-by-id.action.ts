@@ -23,9 +23,10 @@ export const getProductByIdAction = async ( productId: string ): Promise<Product
       ...data,
       images: data.images.map( getProductImageAction )
     };
-  } catch (error) {
+    // eslint-disable-next-line
+  } catch (error: any) {
     console.log('<--------------- JK Get-product-by-id.action Error --------------->');
-    console.log(error);
+    console.log(error.message);
     throw new Error(`Error getting product by id ${productId}`);
   }
 }
