@@ -1,3 +1,6 @@
+import path from 'path';
+import fs from 'fs';
+
 import { tesloApi } from "@/api/teslo.api";
 import { loginActions } from "@/modules/auth/actions";
 import type { AuthSuccess } from "@/modules/auth/interfaces";
@@ -80,4 +83,38 @@ describe('Create-update-product.action.test', () => {
       })
     );
   });
+
+  test( 'should upload product images', async () => {
+
+    const imagePath = path.resolve(__dirname, '../../../fake', 't-shirt.fake.jpg');
+    const imageBuffer = fs.readFileSync(imagePath);
+
+    const imageFile = new File([imageBuffer], 't-shirt.fake.jpg', { type: 'image/jpeg' });
+
+    const product: Product = {
+      id: '',
+      title: "test-product-1",
+      price: 100,
+      description: "test-description-1",
+      slug: "test-slug-1",
+      stock: 10,
+      sizes: [],
+      gender: "kid",
+      tags: [],
+      // eslint-disable-next-line
+      images: [ imageFile ] as any,
+      // eslint-disable-next-line
+      user: {} as any,
+    };
+    const resp = await createUpdateProductAction(product);
+
+    expect( resp.images.length ).toBe(1);
+    
+    const [ firstImage ] = resp.images;
+
+    expect( typeof firstImage ).toBe('string');
+
+    await tesloApi.delete(`/products/${resp.id}`);
+  });
+
 });
