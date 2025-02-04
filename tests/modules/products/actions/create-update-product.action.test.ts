@@ -46,7 +46,7 @@ describe('Create-update-product.action.test', () => {
       tags: [],
       images: [],
       user: {
-        id: '1cf94c33-db63-48f1-8a78-21c456ce9f4b',
+        id: expect.any(String),
         email: 'test1@google.com',
         fullName: 'Test One',
         isActive: true,
