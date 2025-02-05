@@ -23,7 +23,6 @@ vi.mock('@tanstack/vue-query', () => {
       prefetchQuery: vi.fn(),
     }),
     useQuery: vi.fn(),
-
   }
 });
 
