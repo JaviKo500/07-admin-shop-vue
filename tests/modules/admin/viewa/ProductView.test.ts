@@ -72,4 +72,46 @@ describe('ProductView.test', () => {
     });
 
   });
+
+  test( 'should render page with a product', async () => {
+    ( useQuery as Mock ).mockReturnValue({
+      isLoading: ref(false),
+      isError: ref(false),
+      refetch: vi.fn(),
+      data: ref(fakeProduct),
+    });
+    const wrapper = shallowMount(ProductView, {
+      props: {
+        productId: '1234',
+      },
+      global: {
+        plugins: [
+          router,
+        ],
+      },
+    });
+
+    const customInputs = wrapper.findAllComponents({ name: 'CustomInput' });
+    const customTextArea = wrapper.findAllComponents({ name: 'CustomTextArea' });
+    const sizeButtons = wrapper.findAll('button.flex-1');
+    expect( customInputs.length ).toBe(4);
+    // eslint-disable-next-line
+    const productValues = Object.values(fakeProduct as any);
+    customInputs.forEach( customInput => {
+      const modelValue = customInput.props('modelValue');
+      expect( productValues ).toContain(modelValue);
+    });
+    customTextArea.forEach( customTextArea => { 
+      const modelValue = customTextArea.props('modelValue');
+      expect( productValues ).toContain(modelValue);
+    });
+
+    sizeButtons.forEach( sizeButton => {
+      if ( fakeProduct?.sizes.includes(sizeButton.text()) ) {
+        expect( sizeButton.classes() ).toContain('bg-blue-500');
+      } else {
+        expect( sizeButton.classes() ).toContain('bg-blue-100');
+      }
+    });
+  });
 });
