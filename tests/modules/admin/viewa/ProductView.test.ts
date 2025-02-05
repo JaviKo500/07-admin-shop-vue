@@ -114,4 +114,59 @@ describe('ProductView.test', () => {
       }
     });
   });
+
+  test( 'should submit a form if data is valid', async () => {
+    ( useQuery as Mock ).mockReturnValue({
+      isLoading: ref(false),
+      isError: ref(false),
+      refetch: vi.fn(),
+      data: ref(fakeProduct),
+    });
+    const wrapper = shallowMount(ProductView, {
+      props: {
+        productId: '1234',
+      },
+      global: {
+        plugins: [
+          router,
+        ],
+      },
+    });
+
+    const form = wrapper.find('form');
+    await form.trigger('submit');
+
+    await new Promise( resolve => setTimeout(resolve, 1000) );
+
+    expect(  mutateSpy ).toHaveBeenCalled();
+    expect(  mutateSpy ).toHaveBeenCalledWith(fakeProduct);
+  });
+
+  test( 'should not called submit a form if data is invalid', async () => {
+    ( useQuery as Mock ).mockReturnValue({
+      isLoading: ref(false),
+      isError: ref(false),
+      refetch: vi.fn(),
+      data: ref(fakeProduct),
+    });
+    const wrapper = shallowMount(ProductView, {
+      props: {
+        productId: '1234',
+      },
+      global: {
+        plugins: [
+          router,
+        ],
+      },
+    });
+
+    const titleInput = wrapper.findComponent({ name: 'CustomInput' });
+    titleInput.vm.$emit('update:modelValue');
+    const form = wrapper.find('form');
+    await form.trigger('submit');
+
+    await new Promise( resolve => setTimeout(resolve, 1000) );
+
+    expect(  mutateSpy ).not.toHaveBeenCalled();
+  });
 });
